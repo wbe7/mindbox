@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recive-hello
+  namespace: recivers
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: recive-hello
+  template:
+    metadata:
+      labels:
+        app: recive-hello
+    spec:
+      containers:
+        - name: recive
+          image: wbe7/recive-rabbit:v0.6
+          env:
+            - name: QUEUE
+              value: hello
+            - name: LOGIN
+              value: wbe7
+            - name: PASSWORD
+              value: mindbox123
+            - name: BROKER
+              value: 34.89.173.76:5672

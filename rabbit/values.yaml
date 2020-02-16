@@ -1,0 +1,40 @@
+rabbitmq:
+  username: wbe7
+  existingPasswordSecret: rabbit-pas-secret
+  clustering:
+    rebalance: true
+  configuration: |-
+    ## Clustering
+    cluster_formation.peer_discovery_backend  = rabbit_peer_discovery_k8s
+    cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
+    cluster_formation.node_cleanup.interval = 10
+    cluster_formation.node_cleanup.only_log_warning = true
+    cluster_partition_handling = autoheal
+    # queue master locator
+    queue_master_locator=min-masters
+    # enable guest user
+    loopback_users.guest = false
+
+
+replicas: 3
+
+ingress:
+  enabled: true
+  hostName: rabbit-34-89-199-143.sslip.io
+  path: /
+  tls: true
+  tlsSecret: rabbit-34-89-199-143.sslip.io
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: "letsencrypt-production"
+    certmanager.k8s.io/acme-challenge-type: http01
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+
+
+service:
+  type: LoadBalancer
