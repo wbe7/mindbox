@@ -13,14 +13,14 @@ helm upgrade --install rabbit  stable/rabbitmq --wait --namespace=rabbit -f rabb
 
 Так как мой кластер уже готов, воспользуемся им для тестов.
 
-Запуск нагрузки (необходим установленный компилятор Golang):
+Запуск нагрузки (необходим установленный компилятор Golang последней версии):
 
 ```
 go get github.com/streadway/amqp
 cd cmd/send/
 go run send.go
 ```
-В двух других треминалах нужно запустить `go run send1.go` и `go run send2.go`
+В двух других треминалах нужно запустить `go run send1.go` и `go run send2.go`.
 Начнется генерация сообщений в очереди `hello`, `hello1` и `hello2`.
 Consumers для данных очередей уже установленны в кластер.
 
